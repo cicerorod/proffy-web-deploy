@@ -21,6 +21,14 @@ steps:
     - script: |
           npm pack
       displayName: 'Package package'
+  
+    - task: Npm@1
+      displayName: Package
+      inputs:
+        command: custom
+        verbose: false
+        customCommand: 'run build'
+        
     - task: CopyFiles@2
       inputs:
           contents: '*.tgz'
