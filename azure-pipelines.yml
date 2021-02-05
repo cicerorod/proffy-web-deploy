@@ -18,12 +18,9 @@ steps:
     - script: |
           npm install
       displayName: 'Install dependencies'
-    - script: |
-          npm pack
-      displayName: 'Package package'
-  
+    
     - task: Npm@1
-      displayName: Package
+      displayName: Run Build
       inputs:
         command: custom
         verbose: false
@@ -33,10 +30,15 @@ steps:
       inputs:
           contents: '*.tgz'
           targetFolder: $(Build.ArtifactStagingDirectory)
-      displayName: 'Copy archives to artifacts staging directory'
+      displayName: 'Copy archives to artifacts staging directory'   
+      
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: drop1
+      displayName: 'Publish artifacts'
 
     - task: PublishBuildArtifacts@1
       inputs:
-          path: $(Build.ArtifactStagingDirectory)
-          artifact: package
-      displayName: 'Publish artifacts'
+        pathToPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: drop2
